@@ -1,5 +1,28 @@
 Rails.application.routes.draw do
-  get 'feeds/index'
+  get 'follow/index'
+  get 'follow/create'
+  get 'follow/destroy'
+
+  namespace :api do
+    namespace :v1 do
+      post "likes/create", to: "likes#create"
+      delete "/likes/:id", to: "likes#destroy"
+      get "/likes/:id", to: 'likes#show'
+      get "/users/:id", to: "users#show"
+      get "/follows/show", to: "follows#show"
+      post "/follows/create", to:"follows#create"
+      post "comments/create", to:"comments#create"
+      delete "follows/destroy", to: "follows#destroy"
+
+      get '/comments/get_post_comment', to: "comments#get_post_comment"
+      resources :posts, only: [:index,:show]
+      resources :likes, only: [:create, :destroy]
+    end
+  end
+
+
+
+
   devise_for :users, controllers: {
     registration: 'users/registrations',
     sessions: 'users/sessions',
@@ -8,7 +31,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root "feeds#index"
+  root 'homepage#index'
+  get '/*path' => 'homepage#index'
 end
 
 

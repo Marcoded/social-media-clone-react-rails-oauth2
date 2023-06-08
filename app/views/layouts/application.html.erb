@@ -11,6 +11,13 @@
   </head>
 
   <body>
+    <% if current_user %>
+    <%= current_user %>
+    <%= current_user.full_name %>
+  <% else %>
+    <p>No user connected</p>
+  <% end %>
+  
     <%= yield %>
   </body>
 </html>
