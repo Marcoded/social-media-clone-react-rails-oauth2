@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get '/comments/get_post_comment', to: "comments#get_post_comment"
       delete "follows/destroy", to: "follows#destroy"
       get 'posts/:id', to: "posts#show"
+      post 'notifications/set_read/:id', to: 'notifications#set_read'
      
       get "/notifications/all", to: "notifications#index"
       

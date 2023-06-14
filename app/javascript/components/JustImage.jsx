@@ -12,7 +12,8 @@ const JustImage = (props) => {
         alt=""
       />
       <div className="absolute start-0 left-0 inset-0">
-  
+        <h1 className="text-white">{props.postId}</h1>
+      <PostModal postId = {props.postId}></PostModal>
       </div>
     </div>
   );

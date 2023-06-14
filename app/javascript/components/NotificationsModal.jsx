@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useHeaders from "./UseHeaders.jsx";
 
 const NotificationModal = () => {
+  const headers = useHeaders()
   const [isOpen, setIsOpen] = useState(false);
   const [notification, setNotification] = useState([]);
 
@@ -23,9 +25,10 @@ const NotificationModal = () => {
   };
 
   const getNotification = (userId) => {
+    console.log("fetching notification")
     axios
       .get(`/api/v1/notifications/all`, {
-        headers: getHeaders(),
+        headers: headers,
       })
       .then((response) => {
         // handle success
@@ -39,22 +42,38 @@ const NotificationModal = () => {
   };
 
   useEffect(() => {
-    console.log(
-      "fetching notification ---------------------------------------------------------------------"
-    );
     getNotification();
-  }, []);
+  }, [headers]);
+
+  const deleteNotification = (id) => {
+    axios
+      .post(`/api/v1/notifications/set_read/${id}`, {}, { headers: headers })
+      .then((response) => {
+        // handle success
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => {
+        getNotification();
+      });
+  };
+  
 
   const compileNotification = () => {
-    return notification.map((notification) => (
-      <div className="h-10  flex items-center justify-evenly w-full" key={notification.id}>
+    unreadNotification = notification.filter((notification) => notification.read == false)
+    return unreadNotification.map((notification) => (
+      <div className="h-10  flex items-center justify-left w-full" key={notification.id}>
         <img
           
           src={notification.from_user.avatar_url}
           alt=""
-          className="rounded-full h-7 w-7 "
+          className="rounded-full h-7 w-7 mx-2 "
         />
         <h1>{notification.message}</h1>
+        <button onClick={() => deleteNotification(notification.id)} className="text-slate-400 mx-2 hover:text-slate-600 ">x</button>
       </div>
     ));
   };

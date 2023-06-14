@@ -10,11 +10,10 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
-    puts "id params bellow"
-    puts params[:id]
+
+ 
     json_response = @post.as_json(include: [:creator, comments: { include: :user }])
-    puts "JSON response bellow"
-    puts JSON.pretty_generate(json_response)
+    
     render json: json_response
   end
   

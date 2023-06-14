@@ -26,7 +26,7 @@ export default function LikeIcon(props) {
   const asyncDeleteLike = async (likeId) => {
     console.log("DELETING LIKE")
     const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    const response = await fetch(`api/v1/likes/${likeId}`, {
+    const response = await fetch(`/api/v1/likes/${likeId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

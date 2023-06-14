@@ -3,15 +3,12 @@ class Api::V1::FollowsController < ApplicationController
   end
 
   def show
-    puts "params[:user_id]: #{params[:user_id]}"
-    puts "current_user: #{current_user.inspect}"
+  
   
     @follow = Follow.find_by(follower: current_user, followed: params[:user_id])
     @followed_back = Follow.find_by(follower: params[:user_id].to_i, followed: current_user)
   
-    puts "@follow: #{@follow&.inspect}"
-    puts "@followed_back: #{@followed_back&.inspect}"
-  
+   
     render json: {
       follow: {
         exists: @follow.present?,

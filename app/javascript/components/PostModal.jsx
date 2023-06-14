@@ -36,12 +36,30 @@ const PostModal = (props) => {
   };
   
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const csrfToken = document.querySelector('[name="csrf-token"]').content;
+    await fetch(`/api/v1/comments/create?post_id=${props.postId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken,
+      },
+      body: JSON.stringify({
+        body: event.target.elements.body.value,
+      }),
+    });
 
+    // Clear the form input values
+    event.target.elements.body.value = "";
+   getPostInfo();
+  };
 
   const getPostInfo = async () => {
     console.log("entering post info fonction");
+    console.log("fetching post info with if of", props.postId)
     const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    const response = await fetch(`api/v1/posts/${props.postId}`, {
+    const response = await fetch(`/api/v1/posts/${props.postId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +119,7 @@ const PostModal = (props) => {
                   </div>
 
                   <div className="justify-end">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                       <input
                         type="text"
                         name="body"
