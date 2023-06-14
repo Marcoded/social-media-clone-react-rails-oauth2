@@ -6,6 +6,7 @@ const SingleComment = (props) => {
         <>
             <UserAndName creator={props.user} scale="small"></UserAndName>
             <p>{props.comment.body}</p>
+            <div className="divider" />
            
         </>
     )

@@ -1,20 +1,21 @@
 module.exports = {
-
-
-  theme:{
+  theme: {
     extend: {
       gridTemplateColumns: {
-        'custom': 'repeat(auto-fit, minmax(30%, 3fr))',
-      }
-    }
+        custom: "repeat(auto-fit, minmax(30%, 3fr))",
+      },
+      fontFamily: {
+        lato: ["lato", "sans-serif"],
+      },
+    },
   },
 
   content: [
-    './app/views/**/*.html.erb',
-    './app/helpers/**/*.rb',
-    './app/assets/stylesheets/**/*.css',
-    './app/javascript/**/*.js',
-    './app/javascript/**/*.jsx',
+    "./app/views/**/*.html.erb",
+    "./app/helpers/**/*.rb",
+    "./app/assets/stylesheets/**/*.css",
+    "./app/javascript/**/*.js",
+    "./app/javascript/**/*.jsx",
   ],
   plugins: [require("daisyui")],
-}
+};

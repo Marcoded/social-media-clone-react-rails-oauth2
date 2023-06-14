@@ -15,7 +15,7 @@ export default function LikeIcon(props) {
       },
     });
     const data = await response.json();
-    console.log("Like data from LikeIcon.jsx / Like#Create")
+  
     console.log(data);
     setLiked(true);
     setLikeID(data.likeId);
@@ -56,8 +56,8 @@ export default function LikeIcon(props) {
     setLiked(data.likedByCurrentUser);
     setLikeCount(data.likeCount);
     setLikeID(data.likeId);
-    console.log("Like data from LikeIcon.jsx / Like#Show")
-    console.log(data);
+
+
   };
 
   const handleClick = (postId, likeId) => {
@@ -72,7 +72,7 @@ export default function LikeIcon(props) {
   return (
     <div className="like-icon" onClick={() => handleClick(props.postId, likeId)}>
    
-      {console.log(liked)}
+     
       {liked ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

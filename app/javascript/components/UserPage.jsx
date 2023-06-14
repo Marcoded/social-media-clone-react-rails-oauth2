@@ -40,19 +40,7 @@ const UserPage = () => {
     getUserInfo(id);
   }, [id]);
 
-  const compileUserPosts = (posts) => {
-    return posts.map((post) => (
-      <PostPreview
-        key={post.id}
-        postId={post.id}
-        body={post.body}
-        title={post.title}
-        image_url={post.image_url}
-        creator={post.creator}
-        likeCount={post.like_count}
-      />
-    ));
-  };
+  
 
   const compileUserPosts2 = (posts) => {
     return posts.map((post) => (
@@ -75,10 +63,22 @@ const UserPage = () => {
         <div className="h-screen w-screen flex flex-col items-center ">
           <div className="flex  justify-between align-middle items-center">
             <UserAndName creator={userInfo} scale="main" />
-            <FollowBtn user={userInfo}/>
+            <FollowBtn user={userInfo} />
+            <p className="mx-5">
+              <span className="text-primary font-bold">
+                {userInfo.count_followers}
+              </span>{" "}
+              Followers
+            </p>
+            <p className="mx-5">
+              <span className="text-primary font-bold">
+                {userInfo.count_followings}
+              </span>{" "}
+              Following
+            </p>
           </div>
 
-          <div className="w-full lg:w-1/2 grid grid-cols-custom gap-2">
+          <div className="w-full lg:w-1/2 grid grid-cols-custom my-10 gap-2">
             {compileUserPosts2(userPosts)}
           </div>
         </div>

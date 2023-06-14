@@ -12,9 +12,12 @@ Rails.application.routes.draw do
       get "/follows/show", to: "follows#show"
       post "/follows/create", to:"follows#create"
       post "comments/create", to:"comments#create"
-      delete "follows/destroy", to: "follows#destroy"
-
       get '/comments/get_post_comment', to: "comments#get_post_comment"
+      delete "follows/destroy", to: "follows#destroy"
+      get 'posts/:id', to: "posts#show"
+     
+      get "/notifications/all", to: "notifications#index"
+      
       resources :posts, only: [:index,:show]
       resources :likes, only: [:create, :destroy]
     end

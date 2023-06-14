@@ -17,7 +17,6 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setPosts(data);
       });
   };
@@ -37,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="  bg-gray-200">
+    <div className="  bg-gray-200 font-lato">
       <NavBar />
       <div className=" items-center justify-center flex flex-col">{compilePosts(posts)}
       </div>

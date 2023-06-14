@@ -18,8 +18,9 @@
     "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
   },
   "devDependencies": {
-    "@prettier/plugin-ruby": "^3.2.2",
+    "@tailwindcss/typography": "^0.5.9",
     "daisyui": "^3.0.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0"
   }
 }

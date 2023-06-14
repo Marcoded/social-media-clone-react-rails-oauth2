@@ -8,18 +8,19 @@ export default function PostCard(props) {
 
   return (
     <>
-      <div className="card card-compact w-96 bg-base-100 shadow-xl rounded-md my-2">
+      <div className="card card-compact my-5  w-96 bg-base-100 shadow-xl rounded-md font-sans ">
         <UserAndName creator={props.creator} scale="medium" />
 
         <figure>
           <img src={props.image_url} alt="" />
         </figure>
         <div className="card-body">
-          <p>{props.body}</p>
+          <p className="font-lato">{props.body}</p>
       
         
           <div className="card-actions justify-end">
-            <PostModal creator={props.creator} image_url={props.image_url} body={props.body} postId={postId}  />
+            <div></div>
+            <PostModal postId={postId}  />
             <LikeIcon postId={postId} />
           </div>
         </div>

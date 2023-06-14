@@ -14,6 +14,10 @@ class User < ApplicationRecord
   has_many :following, through: :active_follows, source: :followed
   has_many :followers, through: :passive_follows, source: :follower
 
+  has_many :sent_notifications, class_name: 'Notification', foreign_key: 'from_user_id'
+  has_many :received_notifications, class_name: 'Notification', foreign_key: 'to_user_id'
+
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -22,4 +26,15 @@ class User < ApplicationRecord
       user.avatar_url = auth.info.image
     end
   end
+
+
+  def count_followers
+    return self.followers.count
+  end
+  
+  def count_followings
+    return self.following.count
+  end
+
+
 end

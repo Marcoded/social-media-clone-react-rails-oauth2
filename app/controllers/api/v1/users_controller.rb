@@ -7,9 +7,10 @@ class Api::V1::UsersController < ApplicationController
     @posts = @user.created_posts
 
     respond_to do |format|
-      format.json { render json: { user: @user, posts: @posts.as_json(methods: :like_count) } }
+      format.json { render json: { user: @user.as_json(methods: [:count_followers, :count_followings]), posts: @posts.as_json(methods: :like_count) } }
       format.html { render :show }
     end
+    
   end
 
 end

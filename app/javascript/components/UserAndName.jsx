@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const UserAndName = (props) => {
-  console.log("props from user and name", props);
+
+  console.log("entering user and name, props are", props)
+
   const scale = () => {
     if (props.scale === "large") {
       return { imgClass: "h-20 w-20", textClass: "text-3xl" };
