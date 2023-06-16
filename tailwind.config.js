@@ -6,6 +6,9 @@ module.exports = {
       },
       fontFamily: {
         lato: ["lato", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
+        fira: ["Fira Sans", "sans-serif"],
+        
       },
     },
   },

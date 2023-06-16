@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, redirect } from "react-router-dom";
 import NotificationModal from "./NotificationsModal";
+import NewPost from "./NewPost";
 
 export default function NavBar() {
   const signOut = () => {
@@ -89,6 +90,7 @@ export default function NavBar() {
             />
           </svg>
         </button>
+        <NewPost></NewPost>
         <NotificationModal></NotificationModal>
         <button onClick={signOut} className="btn btn-ghost btn-circle">
           <svg

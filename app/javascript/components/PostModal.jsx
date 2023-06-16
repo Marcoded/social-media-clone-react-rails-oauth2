@@ -5,9 +5,14 @@ import SingleComment from "./SingleComment";
 
 const PostModal = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   const [postInfo, setPostInfo] = useState();
+
+  const size = () => {
+     if (props.display === "hidden") return "h-64 w-64 opacity-0"
+     return "h-6 w-6"
+  }
 
   const openModal = () => {
     getPostInfo();
@@ -20,13 +25,11 @@ const PostModal = (props) => {
 
   const handleOverlayClick = (event) => {
     if (event.target.id == "Background") {
-      console.log("closing modal")
+      console.log("closing modal");
       closeModal();
     }
   };
 
-
-  
   const displayComments = () => {
     return postInfo.comments.map((comment) => {
       return (
@@ -34,7 +37,6 @@ const PostModal = (props) => {
       );
     });
   };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,12 +54,12 @@ const PostModal = (props) => {
 
     // Clear the form input values
     event.target.elements.body.value = "";
-   getPostInfo();
+    getPostInfo();
   };
 
   const getPostInfo = async () => {
     console.log("entering post info fonction");
-    console.log("fetching post info with if of", props.postId)
+    console.log("fetching post info with if of", props.postId);
     const csrfToken = document.querySelector('[name="csrf-token"]').content;
     const response = await fetch(`/api/v1/posts/${props.postId}`, {
       method: "GET",
@@ -73,6 +75,7 @@ const PostModal = (props) => {
 
   return (
     <div>
+
       <svg
         onClick={openModal}
         xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +83,7 @@ const PostModal = (props) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-6 w-6"
+        className={size()}
       >
         <path
           strokeLinecap="round"
@@ -89,52 +92,49 @@ const PostModal = (props) => {
         />
       </svg>
 
-      { isOpen && postInfo &&  (
-      
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-400"  onClick={handleOverlayClick}>
-              <div
-                className="fixed inset-0  opacity-50"
-                id="Background"
-              />
+      {isOpen && postInfo && (
+        <div
+        id="Background"
+          className="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-50 backdrop-blur bg-black/50"
+          onClick={handleOverlayClick}
+        >
+        
 
-              <div className="z-10 flex rounded-lg bg-white shadow-lg">
-                <img
-                  className="max-h-[calc(100vh-10rem)] max-w-[calc(90vw-10rem)]"
-                  src={postInfo.image_url}
-                  alt=""
-                />
+          <div className="z-10 flex rounded-lg bg-white shadow-lg">
+            <img
+              className=" object-fit max-h-[calc(100vh-10rem)] max-w-[calc(90vw-10rem)] object-cover object-center"
+              src={postInfo.image_url}
+              alt=""
+            />
 
-                <div className="flex w-96 flex-col bg-slate-50 px-5">
-                  <UserAndName creator ={postInfo.creator}></UserAndName>
-              
-                  <p className="px-5" style={{ flexGrow: 0 }}>
-                    {postInfo.body}
-                  </p>
-                 
+            <div className="flex w-96 flex-col bg-slate-50 px-5">
+              <UserAndName creator={postInfo.creator}></UserAndName>
 
-                  <div className="divider" />
+              <p className="px-5" style={{ flexGrow: 0 }}>
+                {postInfo.body}
+              </p>
 
-                  <div className="h-96 overflow-auto flex-grow ">
-                    {displayComments()}
-                  </div>
+              <div className="divider" />
 
-                  <div className="justify-end">
-                    <form onSubmit={handleSubmit}>
-                      <input
-                        type="text"
-                        name="body"
-                        placeholder="Add a comment"
-                        className="input w-3/4 max-w-xs focus:outline-none"
-                      />
-                      <button type="submit">Publish</button>
-                    </form>
-                  </div>
-                </div>
+              <div className="h-96 flex-grow overflow-auto ">
+                {displayComments()}
+              </div>
+
+              <div className="justify-end">
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    name="body"
+                    placeholder="Add a comment"
+                    className="input w-3/4 max-w-xs focus:outline-none"
+                  />
+                  <button type="submit">Publish</button>
+                </form>
               </div>
             </div>
-      
-       
-      )  }
+          </div>
+        </div>
+      )}
     </div>
   );
 };

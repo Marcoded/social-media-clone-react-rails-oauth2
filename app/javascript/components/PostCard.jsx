@@ -5,6 +5,7 @@ import UserAndName from "./UserAndName";
 
 export default function PostCard(props) {
   const { postId } = props;
+  console.log("postcard props : ", props)
 
   return (
     <>
@@ -15,7 +16,7 @@ export default function PostCard(props) {
           <img src={props.image_url} alt="" />
         </figure>
         <div className="card-body">
-          <p className="font-lato">{props.body}</p>
+          <p className="">{props.body}</p>
       
         
           <div className="card-actions justify-end">

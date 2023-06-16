@@ -24,7 +24,7 @@ export default function Home() {
   const compilePosts = (posts) => {
     return posts.map((post) => (
   
-        <PostCard key={post.id} postId={post.id} body={post.body} title={post.title} image_url={post.image_url} creator={post.creator} />
+        <PostCard key={post.id} likeCount = {post.like_count} postId={post.id} body={post.body} title={post.title} image_url={post.image_url} creator={post.creator} />
    
     
     ));
@@ -36,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="  bg-gray-200 font-lato">
+    <div className="  bg-gray-200 ">
       <NavBar />
       <div className=" items-center justify-center flex flex-col">{compilePosts(posts)}
       </div>
