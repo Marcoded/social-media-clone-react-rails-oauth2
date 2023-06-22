@@ -1,9 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, redirect } from "react-router-dom";
 import NotificationModal from "./NotificationsModal";
 import NewPost from "./NewPost";
+import useHeaders from "./UseHeaders.jsx";
+import axios from "axios";
 
-export default function NavBar() {
+
+export default function NavBar(props) {
+  headers = useHeaders();
+
+  const [currentUser, setCurrentUser] = useState(null);
+
   const signOut = () => {
     const csrfToken = document.querySelector('[name="csrf-token"]').content;
 
@@ -29,14 +36,39 @@ export default function NavBar() {
       });
   };
 
+  const setTheme = () => {
+    if (document.querySelector('html').getAttribute('data-theme') === 'dark') {
+      document.querySelector('html').setAttribute('data-theme', 'light')
+    } else {
+      document.querySelector('html').setAttribute('data-theme', 'dark')
+    }
+  }
+  
+  
 
+  useEffect(() => {
+  get_current_user()  
+  }, []);
+
+  const get_current_user = () => {
+    console.log("getting current_user -----------------------------")
+    axios
+      .get("./api/v1/users/me",null, headers)
+      .then((response) => {
+        setCurrentUser(response.data);
+        console.log(response.data)
+      
+      })
+      .catch((error) => {
+        // handle error
+      });
+  };
 
   return (
     <div className="navbar bg-base-100">
-      
       <div className="navbar-start">
         <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
+          <label tabIndex={0} className="btn-ghost btn-circle btn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -54,7 +86,7 @@ export default function NavBar() {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            className="dropdown-content menu rounded-box menu-sm mt-3 w-52 bg-base-100 p-2 shadow"
           >
             <li>
               <a>Home</a>
@@ -65,16 +97,19 @@ export default function NavBar() {
             <li>
               <a>About</a>
             </li>
+            <li>
+              <a onClick={setTheme}> switch theme</a>
+            </li>
           </ul>
         </div>
       </div>
       <div className="navbar-center">
-        <Link to="/" className=" text-primary normal-case text-xl">
-           PhotoGram
+        <Link to="/" className=" text-xl normal-case text-primary">
+          PhotoGram
         </Link>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
+        <button className="btn-ghost btn-circle btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -90,9 +125,32 @@ export default function NavBar() {
             />
           </svg>
         </button>
-        <NewPost></NewPost>
+        
+        {currentUser && (
+        <Link to={`users/${currentUser.userId}`}>
+
+        <button id="profile" className="btn-ghost btn-circle btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+            />
+          </svg>
+        </button>
+        </Link>
+        )}
+
+        <NewPost getPosts={props.getPosts}></NewPost>
         <NotificationModal></NotificationModal>
-        <button onClick={signOut} className="btn btn-ghost btn-circle">
+        <button onClick={signOut} className="btn-ghost btn-circle btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"

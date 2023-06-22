@@ -3,9 +3,9 @@ import axios from "axios";
 import useHeaders from "./UseHeaders.jsx";
 
 const NotificationModal = () => {
-  const headers = useHeaders()
+  const headers = useHeaders();
   const [isOpen, setIsOpen] = useState(false);
-  const [notification, setNotification] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -15,72 +15,64 @@ const NotificationModal = () => {
     setIsOpen(false);
   };
 
-  const getHeaders = () => {
-    const csrfToken = document.querySelector("[name=csrf-token]").content;
-    return {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
-    };
-  };
-
-  const getNotification = (userId) => {
-    console.log("fetching notification")
+  const getNotifications = () => {
     axios
       .get(`/api/v1/notifications/all`, {
         headers: headers,
       })
       .then((response) => {
-        // handle success
-        console.log(response.data);
-        setNotification(response.data);
+        setNotifications(response.data);
       })
       .catch((error) => {
-        // handle error
         console.log(error);
       });
   };
 
   useEffect(() => {
-    getNotification();
+    getNotifications();
   }, [headers]);
 
   const deleteNotification = (id) => {
     axios
       .post(`/api/v1/notifications/set_read/${id}`, {}, { headers: headers })
-      .then((response) => {
-        // handle success
-        console.log(response.data);
+      .then(() => {
+        getNotifications();
       })
       .catch((error) => {
-        // handle error
         console.log(error);
-      })
-      .finally(() => {
-        getNotification();
       });
   };
-  
 
-  const compileNotification = () => {
-    unreadNotification = notification.filter((notification) => notification.read == false)
-    return unreadNotification.map((notification) => (
-      <div className="h-10  flex items-center justify-left w-full" key={notification.id}>
+  const unreadNotifications = notifications.filter(
+    (notification) => !notification.read
+  );
+  const unreadNotificationCount = unreadNotifications.length;
+
+  const compileNotifications = () => {
+    return unreadNotifications.map((notification) => (
+      <div
+        className="justify-left flex h-10 w-full items-center"
+        key={notification.id}
+      >
         <img
-          
           src={notification.from_user.avatar_url}
           alt=""
-          className="rounded-full h-7 w-7 mx-2 "
+          className="mx-2 h-7 w-7 rounded-full"
         />
         <h1>{notification.message}</h1>
-        <button onClick={() => deleteNotification(notification.id)} className="text-slate-400 mx-2 hover:text-slate-600 ">x</button>
+        <button
+          onClick={() => deleteNotification(notification.id)}
+          className="mx-2 text-slate-400 hover:text-slate-600"
+        >
+          x
+        </button>
       </div>
     ));
   };
 
   return (
     <div className="relative">
-      <button onClick={openModal} className="btn btn-ghost btn-circle">
+      <button onClick={openModal} className="btn-ghost btn-circle btn">
         <div className="indicator">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -96,20 +88,28 @@ const NotificationModal = () => {
               d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
             />
           </svg>
-          <span className="badge badge-xs badge-primary indicator-item"></span>
+          {unreadNotificationCount === 0 ? null : (
+            <span className="badge badge-primary badge-xs indicator-item">
+              {unreadNotificationCount}
+            </span>
+          )}
         </div>
       </button>
       {isOpen && (
         <div
           onClick={closeModal}
-          className="fixed top-0 left-0 z-20 h-screen w-screen"
+          className="fixed left-0 top-0 z-20 h-screen w-screen"
           id="Background-modal"
         >
           <div
-            className="bg-white border absolute right-0  mt-20 mr-20  border-gray-300 rounded p-4 shadow w-80 flex flex-col  "
+            className="absolute right-0 mr-20 mt-20 flex w-80 flex-col rounded border border-gray-300 bg-white p-4 shadow"
             id="modal"
           >
-            {compileNotification()}
+            {unreadNotificationCount === 0 ? (
+              <h1>No new notifications</h1>
+            ) : (
+              compileNotifications()
+            )}
           </div>
         </div>
       )}

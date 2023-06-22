@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import useHeaders from "./UseHeaders.jsx";
 
-const NewPost = () => {
+const NewPost = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [imageLink, setImageLink] = useState(
     "https://www.travelandleisure.com/thmb/pY4RFYpZ4Je81EnNwZZMmUyINSM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/header-SANFRAN1121-eb3b40fea0de4cb5aa346d00eb66f16f.jpg"
@@ -73,6 +73,8 @@ const NewPost = () => {
       );
   
       console.log("Post created successfully:", response.data);
+      closeModal();
+      props.getPosts()
     
     } catch (error) {
       console.error("Error creating post:", error);
@@ -109,7 +111,7 @@ const NewPost = () => {
           onClick={handleOverlayClick}
         >
           <div className="fixed inset-0 bg-black opacity-50" id="Background" />
-          <div className="z-10 flex h-2/3 w-2/3 rounded-lg bg-white shadow">
+          <div className="z-10 flex h-2/3 w-2/3 rounded-lg bg-neutral shadow">
             <form className="flex flex-col p-8">
               <input
                 onChange={imageLinker}

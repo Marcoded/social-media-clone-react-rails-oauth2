@@ -45,6 +45,8 @@ export default function LikeIcon(props) {
    
   };
 
+  
+
   const isPostLiked = async (postId) => {
     const csrfToken = document.querySelector('[name="csrf-token"]').content;
     const response = await fetch(`api/v1/likes/${postId}`, {
@@ -70,7 +72,7 @@ export default function LikeIcon(props) {
 
   return (
     <div className="like-icon" onClick={handleClick}>
-      <div className="flex items-center">
+      <div className="flex items-center ml-2">
         <h1>{likeCount}</h1>
         {liked ? (
           <svg

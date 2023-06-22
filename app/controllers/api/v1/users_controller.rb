@@ -13,4 +13,10 @@ class Api::V1::UsersController < ApplicationController
     
   end
 
+  def me
+    puts "getting current user ------------------------------------------------------------------"
+    return unless current_user
+    render json: { userId: current_user.id}
+  end
+
 end

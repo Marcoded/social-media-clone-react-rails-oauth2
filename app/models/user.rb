@@ -18,6 +18,8 @@ class User < ApplicationRecord
   has_many :received_notifications, class_name: 'Notification', foreign_key: 'to_user_id'
 
 
+
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -25,6 +27,11 @@ class User < ApplicationRecord
       user.full_name = auth.info.name 
       user.avatar_url = auth.info.image
     end
+  end
+
+  def welcome_follow
+    return unless User.find(1)
+    Notification.create(from_user_id: 1, to_user_id: self.id, message: "Welcome to the community!")
   end
 
 

@@ -8,15 +8,23 @@ Rails.application.routes.draw do
       post "likes/create", to: "likes#create"
       delete "/likes/:id", to: "likes#destroy"
       get "/likes/:id", to: 'likes#show'
+      get "/users/me", to: "users#me"
       get "/users/:id", to: "users#show"
+      
+
       get "/follows/show", to: "follows#show"
       post "/follows/create", to:"follows#create"
+      delete "follows/destroy", to: "follows#destroy"
+
       post "comments/create", to:"comments#create"
       get '/comments/get_post_comment', to: "comments#get_post_comment"
-      delete "follows/destroy", to: "follows#destroy"
+
+      
       get 'posts/:id', to: "posts#show"
       post 'posts/create', to: "posts#create"
       post 'notifications/set_read/:id', to: 'notifications#set_read'
+
+      
      
       get "/notifications/all", to: "notifications#index"
       

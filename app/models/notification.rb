@@ -2,7 +2,7 @@ class Notification < ApplicationRecord
   after_create :set_content, :set_read_to_false
   
 
-  enum notification_type: { is_following_you: 0, liked_your_post: 1, commented_your_post: 2 }
+  enum notification_type: { is_following_you: 0, liked_your_post: 1, commented_your_post: 2, welcome_message: 3 }
 
   belongs_to :from_user, class_name: 'User'
   belongs_to :to_user, class_name: 'User'
@@ -14,6 +14,8 @@ class Notification < ApplicationRecord
       self.message = "#{from_user.full_name.split(' ')[0]} liked your post"
     elsif commented_your_post?
       self.message = "#{from_user.full_name.split(' ')[0]}commented your post"
+    elsif welcome_message?
+      self.message = "Thank you for joining Photogram"
     end
 
     save

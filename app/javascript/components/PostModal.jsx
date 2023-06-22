@@ -10,9 +10,9 @@ const PostModal = (props) => {
   const [postInfo, setPostInfo] = useState();
 
   const size = () => {
-     if (props.display === "hidden") return "h-64 w-64 opacity-0"
-     return "h-6 w-6"
-  }
+    if (props.display === "hidden") return "h-64 w-64 opacity-0";
+    return "h-6 w-6";
+  };
 
   const openModal = () => {
     getPostInfo();
@@ -75,7 +75,6 @@ const PostModal = (props) => {
 
   return (
     <div>
-
       <svg
         onClick={openModal}
         xmlns="http://www.w3.org/2000/svg"
@@ -94,20 +93,18 @@ const PostModal = (props) => {
 
       {isOpen && postInfo && (
         <div
-        id="Background"
-          className="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-50 backdrop-blur bg-black/50"
+          id="Background"
+          className="fixed inset-0 z-50 flex items-center justify-center  bg-black/50 bg-opacity-50 backdrop-blur"
           onClick={handleOverlayClick}
         >
-        
-
-          <div className="z-10 flex rounded-lg bg-white shadow-lg">
+          <div className="z-10 flex rounded-lg bg-base shadow-lg">
             <img
-              className=" object-fit max-h-[calc(100vh-10rem)] max-w-[calc(90vw-10rem)] object-cover object-center"
+              className="  max-h-[calc(100vh-10rem)] max-w-[calc(90vw-10rem)] object-center"
               src={postInfo.image_url}
               alt=""
             />
 
-            <div className="flex w-96 flex-col bg-slate-50 px-5">
+            <div className="flex w-96 flex-col bg-base-100 px-5">
               <UserAndName creator={postInfo.creator}></UserAndName>
 
               <p className="px-5" style={{ flexGrow: 0 }}>

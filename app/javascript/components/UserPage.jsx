@@ -60,7 +60,7 @@ const UserPage = () => {
     <>
       <NavBar />
       {userInfo ? (
-        <div className="h-screen w-screen flex flex-col items-center ">
+        <div className="h-screen  flex flex-col items-center ">
           <div className="flex  justify-between align-middle items-center">
             <UserAndName creator={userInfo} scale="main" />
             <FollowBtn user={userInfo} />

@@ -13,6 +13,16 @@ module.exports = {
     },
   },
 
+  daisyui: {
+    themes: ["light", "dark"],
+    mytheme: {
+      
+
+    }
+    
+  
+  },
+
   content: [
     "./app/views/**/*.html.erb",
     "./app/helpers/**/*.rb",

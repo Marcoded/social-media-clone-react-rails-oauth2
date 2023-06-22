@@ -7,7 +7,7 @@ const JustImage = (props) => {
   return (
     <div className="relative">
       <img
-        className="aspect-square max-h-56 rounded-lg"
+        className="aspect-square  max-h-56 rounded-lg"
         src={props.image_url}
         alt=""
       />
