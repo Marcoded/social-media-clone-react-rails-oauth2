@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import useHeaders from "./UseHeaders";
 
 const FollowBtn = (props) => {
   const [followInfo, setFollowInfo] = useState(null);
 
-  const getHeaders = () => {
-    const csrfToken = document.querySelector("[name=csrf-token]").content;
-    return {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "X-CSRF-Token": csrfToken,
-    };
-  };
+  headers = useHeaders();
 
   const getFollowInfo = (userId) => {
     axios
       .get(`/api/v1/follows/show?user_id=${userId}`, {
-        headers: getHeaders(),
+        headers: headers,
       })
       .then((response) => {
         // handle success
@@ -40,7 +34,7 @@ const FollowBtn = (props) => {
         "/api/v1/follows/create",
         { user_id: userId },
         {
-          headers: getHeaders(),
+          headers: headers,
         }
       )
       .then((response) => {
@@ -65,7 +59,7 @@ const FollowBtn = (props) => {
     try {
       const response = await axios.delete("/api/v1/follows/destroy", {
         params: { user_id: userId },
-        headers: getHeaders(),
+        headers: headers,
       });
       console.log(response.data);
       setFollowInfo((prevFollowInfo) => ({
@@ -86,15 +80,17 @@ const FollowBtn = (props) => {
 
     return followInfo.follow.exists ? (
       <button
+        id="Unfollow"
         onClick={() => unFollow(props.user.id)}
-        className="btn btn-outline btn-ghost btn-xs"
+        className="btn-ghost btn-outline btn-xs btn"
       >
         Unfollow
       </button>
     ) : (
       <button
+        id="Follow"
         onClick={() => createFollow(props.user.id)}
-        className="btn btn-outline btn-secondary btn-xs"
+        className="btn-secondary btn-outline btn-xs btn"
       >
         {followInfo.followed_back.exists ? "Follow back" : "Follow"}
       </button>

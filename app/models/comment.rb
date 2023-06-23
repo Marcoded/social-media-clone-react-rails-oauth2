@@ -1,6 +1,6 @@
 class Comment < ApplicationRecord
   after_create :create_comment_notification
-  belongs_to :post
+  belongs_to :post, dependent: :destroy
   belongs_to :user
   has_many :likes, as: :likeable
 

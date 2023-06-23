@@ -54,7 +54,7 @@ export default function NavBar(props) {
       .get("./api/v1/users/me", null, headers)
       .then((response) => {
         setCurrentUser(response.data);
-        console.log(response.data);
+     
       })
       .catch((error) => {
         // handle error
@@ -105,7 +105,7 @@ export default function NavBar(props) {
               </a>
             </li>
             <li>
-              <a onClick={setTheme}> switch theme</a>
+              <a onClick={setTheme}> Toggle theme</a>
             </li>
           </ul>
         </div>

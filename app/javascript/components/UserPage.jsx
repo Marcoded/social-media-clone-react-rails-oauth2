@@ -17,8 +17,7 @@ const UserPage = () => {
   const [userPosts, setUserPosts] = useState([]);
 
   const getUserInfo = (id) => {
-
-
+    console.log("getting user info ----------------------------------------------")
     axios
       .get(`/api/v1/users/${id}`, {
         headers: headers
@@ -28,7 +27,7 @@ const UserPage = () => {
         setUserPosts(response.data.posts);
       })
       .catch((error) => {
-        // handle error
+        console.log("loggin error from GetUserInfo ------------------------------------------")
         console.log(error);
       });
   };

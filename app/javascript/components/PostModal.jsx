@@ -40,16 +40,18 @@ const PostModal = (props) => {
     });
   };
 
-  const handleSubmit = (event) => {
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios.post(
+    await axios.post(
       `/api/v1/comments/create?post_id=${props.postId}`,
       {
         body: event.target.elements.body.value,
       },
-      headers
+      { headers: headers }
     );
-
+    
     event.target.elements.body.value = "";
     getPostInfo();
   };
