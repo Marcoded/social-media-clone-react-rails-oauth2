@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
   database: api_auth_react_production
   username: api_auth_react
   password: <%= ENV["API_AUTH_REACT_DATABASE_PASSWORD"] %>

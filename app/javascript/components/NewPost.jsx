@@ -110,7 +110,7 @@ const NewPost = (props) => {
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-400"
           onClick={handleOverlayClick}
         >
-          <div className="fixed inset-0 bg-black opacity-50" id="Background" />
+          <div className="fixed inset-0  bg-black/50 bg-opacity-50 backdrop-blur" id="Background" />
           <div className="z-10 flex h-2/3 w-2/3 rounded-lg bg-neutral shadow">
             <form className="flex flex-col p-8">
               <input
