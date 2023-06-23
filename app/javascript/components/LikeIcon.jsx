@@ -1,78 +1,61 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import useHeaders from "./UseHeaders.jsx";
 
 export default function LikeIcon(props) {
+  const headers = useHeaders();
+
   const { postId } = props;
 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(null);
   const [likeId, setLikeID] = useState(0);
 
-  const asyncCreateLike = async (postId) => {
-    console.log("CREATING LIKE");
-    const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    const response = await fetch(`/api/v1/likes/create?post_id=${postId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-    });
-    const data = await response.json();
+ 
 
-    setLiked(true);
-    setLikeID(data.likeId);
-    setLikeCount(data.likeCount);
-    console.log("like id after creating like", data.likeId);
+  const createLike = () => {
+    axios
+      .post(`/api/v1/likes/create?post_id=${postId}`, {}, { headers: headers })
+      .then((response) => {
+        setLiked(true);
+        setLikeID(response.data.likeId);
+        setLikeCount(response.data.likeCount);
+      });
   };
 
-  const asyncDeleteLike = async (likeId) => {
-    console.log("DELETING LIKE");
-    const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    const response = await fetch(`/api/v1/likes/${likeId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-    });
-    setLiked(false);
-    setLikeID(null);
-
-    const data = await response.json();
-    console.log("data from deleting like", data);
-    setLikeCount(data.likeCount);
-
-   
+  const deleteLike = () => {
+    axios
+      .delete(`/api/v1/likes/${likeId}`, { headers: headers })
+      .then((response) => {
+        setLiked(false);
+        setLikeID(null);
+        setLikeCount(response.data.likeCount);
+      });
   };
 
-  
 
-  const isPostLiked = async (postId) => {
-    const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    const response = await fetch(`api/v1/likes/${postId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-    });
-    const data = await response.json();
-    setLiked(data.likedByCurrentUser);
-    setLikeCount(data.likeCount);
-    setLikeID(data.likeId);
-  };
+
+const isPostLiked = (postId) => {
+  axios
+  .get(`api/v1/likes/${postId}`, {headers: headers})
+  .then( (response) => {
+    setLiked(response.data.likedByCurrentUser)
+    setLikeCount(response.data.likeCount)
+    setLikeID(response.data.likeId)
+  })
+}
 
   const handleClick = () => {
-    liked ? asyncDeleteLike(likeId) : asyncCreateLike(postId);
+    liked ? deleteLike(likeId) : createLike(postId);
   };
 
   useEffect(() => {
     isPostLiked(postId);
-  }, [postId]);
+  }, [postId, headers]);
 
   return (
     <div className="like-icon" onClick={handleClick}>
-      <div className="flex items-center ml-2">
+      <div className="ml-2 flex items-center">
         <h1>{likeCount}</h1>
         {liked ? (
           <svg

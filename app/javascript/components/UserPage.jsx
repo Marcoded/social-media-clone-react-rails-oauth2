@@ -6,27 +6,24 @@ import PostPreview from "./PostPreview";
 import UserAndName from "./UserAndName";
 import JustImage from "./JustImage";
 import FollowBtn from "./Follow";
+import useHeaders from "./UseHeaders.jsx";
 
 const UserPage = () => {
+  
+  const headers = useHeaders();
   const { id } = useParams();
 
   const [userInfo, setUserInfo] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
 
   const getUserInfo = (id) => {
-    const csrfToken = document.querySelector("[name=csrf-token]").content;
+
 
     axios
       .get(`/api/v1/users/${id}`, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "X-CSRF-Token": csrfToken,
-        },
+        headers: headers
       })
       .then((response) => {
-        // handle success
-        console.log(response.data);
         setUserInfo(response.data.user);
         setUserPosts(response.data.posts);
       })
@@ -38,7 +35,7 @@ const UserPage = () => {
 
   useEffect(() => {
     getUserInfo(id);
-  }, [id]);
+  }, [id, headers]);
 
   
 

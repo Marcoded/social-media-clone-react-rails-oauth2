@@ -102,7 +102,7 @@ const NotificationModal = () => {
           id="Background-modal"
         >
           <div
-            className="absolute right-0 mr-20 mt-20 flex w-80 flex-col rounded border border-gray-300 bg-white p-4 shadow"
+            className="absolute right-0 mr-20 mt-20 flex w-80 flex-col rounded border border-gray-300 bg-base-100 p-4 shadow"
             id="modal"
           >
             {unreadNotificationCount === 0 ? (

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UserAndName from "./UserAndName";
 import SingleComment from "./SingleComment";
+import useHeaders from "./UseHeaders";
 
 const PostModal = (props) => {
+  const headers = useHeaders();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,40 +40,34 @@ const PostModal = (props) => {
     });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    await fetch(`/api/v1/comments/create?post_id=${props.postId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-      body: JSON.stringify({
+    axios.post(
+      `/api/v1/comments/create?post_id=${props.postId}`,
+      {
         body: event.target.elements.body.value,
-      }),
-    });
+      },
+      headers
+    );
 
-    // Clear the form input values
     event.target.elements.body.value = "";
     getPostInfo();
   };
 
-  const getPostInfo = async () => {
-    console.log("entering post info fonction");
-    console.log("fetching post info with if of", props.postId);
-    const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    const response = await fetch(`/api/v1/posts/${props.postId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-    });
-    const data = await response.json();
-    setPostInfo(data);
-    console.log("data from post modal", data);
-  };
+ 
+
+  const getPostInfo = () => {
+    axios
+      .get(`/api/v1/posts/${props.postId}`, {headers: headers})
+      .then((response) => {
+        setPostInfo(response.data);
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
+  }
 
   return (
     <div>
@@ -97,7 +93,7 @@ const PostModal = (props) => {
           className="fixed inset-0 z-50 flex items-center justify-center  bg-black/50 bg-opacity-50 backdrop-blur"
           onClick={handleOverlayClick}
         >
-          <div className="z-10 flex rounded-lg bg-base shadow-lg">
+          <div className="bg-base z-10 flex rounded-lg shadow-lg">
             <img
               className="  max-h-[calc(100vh-10rem)] max-w-[calc(90vw-10rem)] object-center"
               src={postInfo.image_url}

@@ -1,25 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import PostCard from "./PostCard";
 import { formatDistanceToNow } from "date-fns";
+import useHeaders from "./UseHeaders";
+import axios from "axios";
 
 export default function Home() {
-  const [posts, setPosts] = React.useState([]);
+  headers = useHeaders();
+
+  const [posts, setPosts] = useState([]);
+
+
 
   const getPosts = () => {
-    const csrfToken = document.querySelector('[name="csrf-token"]').content;
-    fetch("/api/v1/posts", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setPosts(data);
-      });
+    axios.get("/api/v1/posts", { headers: headers }).then((response) => {
+      setPosts(response.data);
+    });
   };
 
   const dateConverter = (datestring) => {
@@ -27,7 +24,7 @@ export default function Home() {
     const now = new Date();
     const timeDiff = now.getTime() - date.getTime();
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-  
+
     if (daysDiff <= 10) {
       if (daysDiff === 0) {
         const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
@@ -38,12 +35,12 @@ export default function Home() {
           return `${hoursDiff} hours ago`;
         }
       } else if (daysDiff === 1) {
-        return 'Yesterday';
+        return "Yesterday";
       } else {
         return `${daysDiff} days ago`;
       }
     } else {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      const options = { year: "numeric", month: "long", day: "numeric" };
       return date.toLocaleDateString(undefined, options);
     }
   };
@@ -59,7 +56,6 @@ export default function Home() {
         image_url={post.image_url}
         creator={post.creator}
         formatedDate={dateConverter(post.created_at)}
-  
       />
     ));
   };
@@ -69,7 +65,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-base-200" >
+    <div className="bg-base-200">
       <NavBar getPosts={getPosts} />
       <div className=" flex flex-col items-center justify-center">
         {compilePosts(posts)}

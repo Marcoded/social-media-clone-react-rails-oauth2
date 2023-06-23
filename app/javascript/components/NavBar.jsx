@@ -5,59 +5,56 @@ import NewPost from "./NewPost";
 import useHeaders from "./UseHeaders.jsx";
 import axios from "axios";
 
-
 export default function NavBar(props) {
   headers = useHeaders();
 
   const [currentUser, setCurrentUser] = useState(null);
 
-  const signOut = () => {
-    const csrfToken = document.querySelector('[name="csrf-token"]').content;
 
-    fetch("/users/sign_out", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("User signed out successfully.");
-          window.location.href = "/";
-        } else {
-          console.error("Failed to sign out.");
-          // Handle sign-out error
-        }
-      })
-      .catch((error) => {
-        console.error("Error occurred during sign out:", error);
-        // Handle sign-out error
-      });
+
+  const signOut = () => {
+    axios.delete("/users/sign_out", { headers: headers }).then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        console.log("User signed out successfully.");
+        window.location.href = "/";
+      } else {
+        console.error("Failed to sign out.");
+      }
+    });
   };
 
   const setTheme = () => {
-    if (document.querySelector('html').getAttribute('data-theme') === 'dark') {
-      document.querySelector('html').setAttribute('data-theme', 'light')
+    const currentTheme = document
+      .querySelector("html")
+      .getAttribute("data-theme");
+    let newTheme;
+    if (currentTheme === "dark") {
+      newTheme = "light";
     } else {
-      document.querySelector('html').setAttribute('data-theme', 'dark')
+      newTheme = "dark";
     }
-  }
-  
-  
+    document.querySelector("html").setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
 
   useEffect(() => {
-  get_current_user()  
+    get_current_user();
+  }, []);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      document.querySelector("html").setAttribute("data-theme", storedTheme);
+    }
   }, []);
 
   const get_current_user = () => {
-    console.log("getting current_user -----------------------------")
+    console.log("getting current_user -----------------------------");
     axios
-      .get("./api/v1/users/me",null, headers)
+      .get("./api/v1/users/me", null, headers)
       .then((response) => {
         setCurrentUser(response.data);
-        console.log(response.data)
-      
+        console.log(response.data);
       })
       .catch((error) => {
         // handle error
@@ -89,13 +86,23 @@ export default function NavBar(props) {
             className="dropdown-content menu rounded-box menu-sm mt-3 w-52 bg-base-100 p-2 shadow"
           >
             <li>
-              <a>Home</a>
+              <a
+                href="https://github.com/Temporal76/social-media-clone-react-rails-oauth2/blob/main/README.md"
+                target="_blank"
+              >
+                About this project
+              </a>
             </li>
             <li>
-              <a>Find people</a>
+              <a>My portofolio</a>
             </li>
             <li>
-              <a>About</a>
+              <a
+                href="https://github.com/Temporal76/social-media-clone-react-rails-oauth2"
+                target="_blank"
+              >
+                View on Github
+              </a>
             </li>
             <li>
               <a onClick={setTheme}> switch theme</a>
@@ -125,27 +132,26 @@ export default function NavBar(props) {
             />
           </svg>
         </button>
-        
-        {currentUser && (
-        <Link to={`users/${currentUser.userId}`}>
 
-        <button id="profile" className="btn-ghost btn-circle btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-            />
-          </svg>
-        </button>
-        </Link>
+        {currentUser && (
+          <Link to={`users/${currentUser.userId}`}>
+            <button id="profile" className="btn-ghost btn-circle btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                />
+              </svg>
+            </button>
+          </Link>
         )}
 
         <NewPost getPosts={props.getPosts}></NewPost>
