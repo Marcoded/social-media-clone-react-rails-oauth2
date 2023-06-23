@@ -6,5 +6,5 @@ bundle install
 bundle exec rake assets:precompile
 bundle exec rake assets:clean
 bundle exec rake db:migrate
-yarn install
+yarn build
 npm install
