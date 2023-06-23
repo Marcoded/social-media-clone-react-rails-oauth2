@@ -8,3 +8,4 @@ bundle exec rake assets:clean
 bundle exec rake db:migrate
 yarn build
 npm install
+rails db:seed
