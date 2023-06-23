@@ -13,9 +13,9 @@ Comment.destroy_all
 Like.destroy_all
 
 # Create users
-alice = User.create(email: 'alice@example.com', password: 'password')
-bob = User.create(email: 'bob@example.com', password: 'password')
-charlie = User.create(email: 'charlie@example.com', password: 'password')
+alice = User.create(email: 'alice@example.com', password: 'password', full_name: "Alice Michel", avatar_url:"https://i.pravatar.cc/150?u=a042581f4e2")
+bob = User.create(email: 'bob@example.com', password: 'password', full_name: "Bob Smith", avatar_url:"https://i.pravatar.cc/150?u=a042581f4e2ff")
+charlie = User.create(email: 'charlie@example.com', password: 'password', full_name: "Charlie Brown", avatar_url:"https://i.pravatar.cc/150?u=a042581f4e2ffg")
 
 # Create posts
 post1 = alice.created_posts.create(
