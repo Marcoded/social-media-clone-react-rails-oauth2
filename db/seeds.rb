@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-=begin
+
 
 # Clear existing data
 Post.destroy_all
@@ -84,7 +84,7 @@ post5 = user.created_posts.create(
   image_url: 'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg'
 )
 
-=end
+
 
 user = User.find(2)
 
