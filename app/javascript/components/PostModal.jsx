@@ -97,12 +97,12 @@ const PostModal = (props) => {
         >
           <div className="bg-base z-10 flex rounded-lg shadow-lg">
             <img
-              className="  max-h-[calc(100vh-10rem)] max-w-[calc(90vw-10rem)] object-center"
+              className="  max-h-[calc(100vh-15rem)] max-w-[calc(100vw-15rem)] object-cover   object-center"
               src={postInfo.image_url}
               alt=""
             />
 
-            <div className="flex w-96 flex-col bg-base-100 px-5">
+            <div className="flex lg:w-96 w-40 flex-col bg-base-100  px-5">
               <UserAndName creator={postInfo.creator}></UserAndName>
 
               <p className="px-5" style={{ flexGrow: 0 }}>

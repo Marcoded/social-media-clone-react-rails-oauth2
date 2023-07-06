@@ -96,16 +96,9 @@ export default function NavBar(props) {
             <li>
               <a href="https://pollet.dev">My portofolio</a>
             </li>
+           
             <li>
-              <a
-                href="https://github.com/Temporal76/social-media-clone-react-rails-oauth2"
-                target="_blank"
-              >
-                View on Github
-              </a>
-            </li>
-            <li>
-              <a onClick={setTheme}> Toggle theme</a>
+              <a onClick={setTheme}> Switch theme</a>
             </li>
           </ul>
         </div>

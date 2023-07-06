@@ -6,7 +6,7 @@
     url: omniauth_authorize_path(resource_name, provider),
     method: :post,
     data: {turbo: 'false'} do |f| %>
-      <%= f.submit "Login", type: "image", src: image_path('google-sign-in-image.png'), class: " h-16 w-auto rounded-mg hover:scale-105 transition duration-300" %>
+      <%= f.submit "Login", type: "image", src: image_path('google-sign-in-image.png'), class: " h-16 w-auto rounded-lg hover:scale-105 transition duration-300" %>
     <% end %>
   <% end %>
 <% end %>
